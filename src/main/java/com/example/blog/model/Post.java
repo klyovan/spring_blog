@@ -6,8 +6,9 @@ import javax.persistence.*;
 @Table(name = "posts")
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUST_SEQ")
-    @SequenceGenerator(sequenceName = "customer_seq", allocationSize = 1, name = "CUST_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "POST_SEQ")
+    @SequenceGenerator(sequenceName = "post_seq", allocationSize = 1, name = "POST_SEQ")
+    @Column(name = "post_id")
     private Integer id;
     @Column(name = "title")
     private String title;

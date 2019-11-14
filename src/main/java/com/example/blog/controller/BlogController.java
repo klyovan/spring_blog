@@ -1,7 +1,9 @@
 package com.example.blog.controller;
 
 import com.example.blog.configuration.WebMvcConfig;
+import com.example.blog.model.Comment;
 import com.example.blog.model.Post;
+import com.example.blog.service.CommentService;
 import com.example.blog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -20,6 +24,8 @@ public class BlogController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private CommentService commentService;
 
     WebMvcConfig webMvcConfig = new WebMvcConfig();
 
@@ -34,11 +40,11 @@ public class BlogController {
     }
 
     @RequestMapping(value = "/formUpdatePost/{id}", method = RequestMethod.GET)
-    public String showFormForUpdate(@PathVariable Integer id, Model theModel) {
+    public String showFormForUpdate(@PathVariable Integer id, Model model) {
         Post post = postService.getPost(id);
         String textUpdate = "Update";
-        theModel.addAttribute("title", textUpdate);
-        theModel.addAttribute("post", post);
+        model.addAttribute("title", textUpdate);
+        model.addAttribute("post", post);
         return "postform";
     }
 
@@ -50,12 +56,12 @@ public class BlogController {
     }
 
     @RequestMapping(value = "/post/{id}", method = RequestMethod.GET)
-    public String getPost(@PathVariable Integer id, Model theModel) {
+    public String getPost(@PathVariable Integer id, Model model) {
         Post post = postService.getPost(id);
-        theModel.addAttribute("post", post);
-//        ArrayList<Comment> comments = commentService.getAllCommentsForPost(id);
-//        Collections.sort(comments);
-//        theModel.addAttribute("comments", comments);
+        model.addAttribute("post", post);
+        ArrayList<Comment> comments = commentService.getAllCommentsForPost(id);
+        Collections.sort(comments);
+        model.addAttribute("comments", comments);
         return "fpost";
     }
 
